@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MediMind AI - Login / Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    colors: {
+                        background: "#0a0a0c",
+                        surface: "rgba(255, 255, 255, 0.03)",
+                        "brand-blue": "#4F8AFF",
+                        "brand-purple": "#8A4FFF",
+                        "brand-cyan": "#00F0FF"
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at top right, rgba(79, 138, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(138, 79, 255, 0.08) 0%, transparent 40%);
+        }
+
+        .blob-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(79, 138, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .blob-2 {
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(138, 79, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation-delay: 2s;
+        }
+
+        .btn-glow {
+            position: relative;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #4F8AFF, #8A4FFF, #00F0FF);
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-glow:hover::before {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+    <!-- Animated Background -->
+    <div class="bg-mesh pointer-events-none">
+        <div class="blob-1 animate-blob"></div>
+        <div class="blob-2 animate-blob"></div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="glass-panel w-full max-w-md rounded-[2.5rem] p-10 relative shadow-[0_0_80px_rgba(79,138,255,0.1)]">
+        <div class="text-center mb-10">
+            <div
+                class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-brand-blue to-brand-cyan flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(79,138,255,0.3)] border border-white/20">
+                <span class="material-symbols-outlined text-white text-3xl" data-icon="neurology">neurology</span>
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Welcome Back</h1>
+            <p class="text-sm text-zinc-400 font-light" id="subtitle-text">Enter your credentials to access your AI
+                companion.</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="auth-form" class="space-y-5">
+            <div>
+                <label class="block text-xs font-semibold text-zinc-400 mb-2 tracking-wide uppercase">Email</label>
+                <input type="email" id="email" required
+                    class="w-full bg-white/5 rounded-xl border border-white/10 px-4 py-3 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue transition-all text-sm text-white placeholder-zinc-600 outline-none"
+                    placeholder="you@example.com" />
+            </div>
+            <div id="username-field" style="display: none;">
+                <label class="block text-xs font-semibold text-zinc-400 mb-2 tracking-wide uppercase">Username</label>
+                <input type="text" id="username"
+                    class="w-full bg-white/5 rounded-xl border border-white/10 px-4 py-3 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue transition-all text-sm text-white placeholder-zinc-600 outline-none"
+                    placeholder="Choose a username" />
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-zinc-400 mb-2 tracking-wide uppercase">Password</label>
+                <input type="password" id="password" required
+                    class="w-full bg-white/5 rounded-xl border border-white/10 px-4 py-3 focus:ring-1 focus:ring-brand-blue focus:border-brand-blue transition-all text-sm text-white placeholder-zinc-600 outline-none"
+                    placeholder="••••••••" />
+            </div>
+
+            <p id="error-message"
+                class="text-red-400 text-xs hidden text-center bg-red-500/10 py-3 rounded-lg border border-red-500/20">
+            </p>
+
+            <button type="submit" id="submit-btn"
+                class="btn-glow w-full bg-white text-black rounded-xl px-4 py-3.5 font-semibold text-sm hover:bg-zinc-100 active:scale-95 transition-all mt-6 shadow-lg border border-white">
+                Sign In
+            </button>
+        </form>
+
+        <div class="text-center mt-8 pt-6 border-t border-white/10 flex flex-col gap-4">
+            <button id="toggle-mode" class="text-sm text-zinc-400 hover:text-white transition-colors font-light">
+                Don't have an account? <span class="font-semibold text-brand-blue">Sign up</span>
+            </button>
+            <button id="skip-btn"
+                class="text-xs text-zinc-500 hover:text-brand-blue transition-colors font-semibold tracking-wider uppercase">
+                Skip & Continue as Guest →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000'
+            : '';
+
+        let isSignup = false;
+
+        document.getElementById('toggle-mode').addEventListener('click', () => {
+            isSignup = !isSignup;
+            document.getElementById('username-field').style.display = isSignup ? 'block' : 'none';
+            document.getElementById('username').required = isSignup;
+            document.getElementById('submit-btn').innerText = isSignup ? 'Create Account' : 'Sign In';
+            document.getElementById('subtitle-text').innerText = isSignup ? 'Create an account to get started.' : 'Enter your credentials to access your AI companion.';
+            document.getElementById('toggle-mode').innerHTML = isSignup ? 'Already have an account? <span class="font-semibold text-brand-blue">Sign in</span>' : 'Don\'t have an account? <span class="font-semibold text-brand-blue">Sign up</span>';
+            document.getElementById('error-message').classList.add('hidden');
+            document.querySelector('h1').innerText = isSignup ? 'Join MediMind' : 'Welcome Back';
+        });
+
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+            const btn = document.getElementById('submit-btn');
+
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+            document.getElementById('error-message').classList.add('hidden');
+
+            try {
+                if (isSignup) {
+                    const res = await fetch(`${API_BASE}/api/auth/register`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, username })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error);
+
+                    // Auto login after register
+                    const loginRes = await fetch(`${API_BASE}/api/auth/login`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const loginData = await loginRes.json();
+                    localStorage.setItem('medimind_token', loginData.token);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    const res = await fetch(`${API_BASE}/api/auth/login`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error);
+                    localStorage.setItem('medimind_token', data.token);
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (err) {
+                document.getElementById('error-message').innerText = err.message;
+                document.getElementById('error-message').classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = isSignup ? 'Create Account' : 'Sign In';
+            }
+        });
+
+        document.getElementById('skip-btn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('skip-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            btn.innerText = 'Creating Guest Session...';
+            btn.disabled = true;
+            submitBtn.disabled = true;
+            document.getElementById('error-message').classList.add('hidden');
+
+            const guestName = 'Guest_' + Math.floor(Math.random() * 10000);
+            const guestEmail = guestName.toLowerCase() + '@example.com';
+            const guestPassword = 'guestPassword123';
+
+            try {
+                // Register Guest
+                const regRes = await fetch(`${API_BASE}/api/auth/register`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: guestEmail, password: guestPassword, username: guestName })
+                });
+                const regData = await regRes.json();
+                if (!regRes.ok) throw new Error(regData.error);
+
+                // Login Guest
+                const loginRes = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: guestEmail, password: guestPassword })
+                });
+                const loginData = await loginRes.json();
+                if (!loginRes.ok) throw new Error(loginData.error);
+
+                localStorage.setItem('medimind_token', loginData.token);
+                window.location.href = 'dashboard.html';
+            } catch (err) {
+                document.getElementById('error-message').innerText = "Guest login failed: " + err.message;
+                document.getElementById('error-message').classList.remove('hidden');
+                btn.innerText = 'Skip & Continue as Guest →';
+                btn.disabled = false;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

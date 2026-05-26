@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MediMind AI – Smart Healthcare Chatbot</title>
+    <!-- Modern Sans-Serif Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    colors: {
+                        background: "#0a0a0c",
+                        surface: "rgba(255, 255, 255, 0.03)",
+                        "surface-border": "rgba(255, 255, 255, 0.1)",
+                        "brand-blue": "#4F8AFF",
+                        "brand-purple": "#8A4FFF",
+                        "brand-cyan": "#00F0FF"
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #4F8AFF33 0deg, #8A4FFF33 180deg, #00F0FF33 360deg)',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-panel-hover:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px 0 rgba(79, 138, 255, 0.15);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #4F8AFF 0%, #00F0FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Subtle animated background mesh */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at top right, rgba(79, 138, 255, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(138, 79, 255, 0.08) 0%, transparent 40%);
+        }
+        
+        .blob-1 { position: absolute; top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(79,138,255,0.15) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); }
+        .blob-2 { position: absolute; bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(138,79,255,0.15) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); animation-delay: 2s; }
+        .blob-3 { position: absolute; top: 40%; left: 60%; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); animation-delay: 4s; }
+
+        .btn-glow {
+            position: relative;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #4F8AFF, #8A4FFF, #00F0FF);
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .btn-glow:hover::before {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-brand-blue/30 selection:text-white">
+
+    <!-- Animated Background -->
+    <div class="bg-mesh pointer-events-none">
+        <div class="blob-1 animate-blob"></div>
+        <div class="blob-2 animate-blob"></div>
+        <div class="blob-3 animate-blob"></div>
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b-0">
+        <div class="flex justify-between items-center px-8 py-5 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-blue to-brand-cyan flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-lg" data-icon="neurology">neurology</span>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-white">MediMind AI</span>
+            </div>
+            <div class="hidden md:flex gap-8 items-center">
+                <a class="text-zinc-400 hover:text-white transition-colors text-sm font-medium tracking-wide" href="#features">Features</a>
+                <a class="text-zinc-400 hover:text-white transition-colors text-sm font-medium tracking-wide" href="#how-it-works">How It Works</a>
+                <a class="text-zinc-400 hover:text-white transition-colors text-sm font-medium tracking-wide" href="#trust">Trust</a>
+                <a href="login.html" class="btn-glow bg-white text-black px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-zinc-100 transition-all scale-100 active:scale-95 duration-200">
+                    Login
+                </a>
+            </div>
+            <div class="md:hidden">
+                <span class="material-symbols-outlined text-zinc-300" data-icon="menu">menu</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32">
+        <!-- Hero Section -->
+        <section class="relative min-h-[85vh] flex items-center px-8 max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center w-full">
+                <!-- Left Content -->
+                <div class="space-y-8 z-10 animate-fade-in-up">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-brand-blue/30 text-brand-cyan text-xs font-medium tracking-widest uppercase">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-cyan"></span>
+                        </span>
+                        Next-Gen Clinical AI
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] text-white">
+                        Your <span class="text-gradient-brand">AI-Powered</span><br/> Health Assistant
+                    </h1>
+                    
+                    <p class="text-lg text-zinc-400 max-w-xl leading-relaxed font-light">
+                        Smart. Fast. Personalized Healthcare Support Anytime. Experience clinical-grade wellness tracking driven by empathetic artificial intelligence.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-5 pt-4">
+                        <a href="#chat-demo" class="btn-glow bg-white text-black px-8 py-4 rounded-full font-semibold text-sm text-center transition-all scale-100 active:scale-95 duration-200">
+                            Start Chat
+                        </a>
+                        <button class="glass-panel text-white px-8 py-4 rounded-full font-semibold text-sm hover:bg-white/10 transition-all duration-200 border border-white/20">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Content: AI Chatbot Preview -->
+                <div class="relative flex justify-center lg:justify-end z-10 animate-fade-in-up" style="animation-delay: 0.2s;" id="chat-demo">
+                    <!-- The Chat UI Panel -->
+                    <div class="glass-panel w-full max-w-md rounded-3xl p-6 relative border border-white/10 overflow-hidden shadow-[0_0_80px_rgba(79,138,255,0.15)]">
+                        <!-- Top header of chat -->
+                        <div class="flex items-center justify-between border-b border-white/10 pb-5 mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white text-lg" data-icon="neurology">neurology</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-white text-sm">MediMind AI</p>
+                                    <p class="text-[11px] text-brand-cyan flex items-center gap-1 font-medium tracking-wide">
+                                        <span class="block w-1.5 h-1.5 bg-brand-cyan rounded-full animate-pulse"></span>
+                                        Online
+                                    </p>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-zinc-500 cursor-pointer hover:text-white transition-colors" data-icon="more_horiz">more_horiz</span>
+                        </div>
+                        
+                        <!-- Chat Messages Container (ID kept for app.js) -->
+                        <div id="chat-messages-container" class="space-y-5 h-[320px] overflow-y-auto no-scrollbar pr-2 mb-4">
+                            <!-- Initial AI Message -->
+                            <div class="flex flex-col items-start gap-1">
+                                <div class="bg-surface border border-white/5 px-4 py-3.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm leading-relaxed text-zinc-200 shadow-sm">
+                                    Hi there! I'm MediMind AI. I can analyze your symptoms or review your health reports. How can I help you today?
+                                </div>
+                                <span class="text-[10px] text-zinc-500 ml-1">Just now</span>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input Form (ID kept for app.js) -->
+                        <form id="chat-form" class="relative mt-2">
+                            <div class="glass-panel p-1 pl-4 rounded-full flex items-center gap-3 border border-white/20 focus-within:border-brand-blue/50 focus-within:bg-white/5 transition-all">
+                                <span class="material-symbols-outlined text-zinc-400 text-lg" data-icon="add_circle">add_circle</span>
+                                <input type="text" id="chat-input" class="w-full bg-transparent border-none focus:ring-0 focus:outline-none p-2 text-sm flex-1 text-white placeholder-zinc-500" placeholder="Ask your health question..." autocomplete="off" required>
+                                <button type="submit" id="chat-submit" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shrink-0 shadow-lg">
+                                    <span class="material-symbols-outlined text-[18px]" data-icon="arrow_upward">arrow_upward</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-32 px-8 max-w-7xl mx-auto relative z-10" id="features">
+            <div class="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Advanced Healthcare, <span class="text-gradient-brand">Simplified.</span></h2>
+                <p class="text-zinc-400 font-light text-lg">Powerful AI tools designed to understand, analyze, and assist you 24/7.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass-panel glass-panel-hover p-8 rounded-3xl transition-all duration-300 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-brand-blue/20 border border-brand-blue/30 flex items-center justify-center text-brand-blue mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined" data-icon="body_system">body_system</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3 tracking-tight">Symptom Checker</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed font-light">Describe what you're feeling, and our AI will provide potential causes and recommendations.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-panel glass-panel-hover p-8 rounded-3xl transition-all duration-300 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-brand-purple/20 border border-brand-purple/30 flex items-center justify-center text-brand-purple mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined" data-icon="forum">forum</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3 tracking-tight">AI Consultation</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed font-light">Have an interactive conversation about your health concerns in real-time, privately.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-panel glass-panel-hover p-8 rounded-3xl transition-all duration-300 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-brand-cyan/20 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3 tracking-tight">Reports Analysis</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed font-light">Upload your lab results and let MediMind explain them in simple, understandable terms.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-panel glass-panel-hover p-8 rounded-3xl transition-all duration-300 group cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3 tracking-tight">24/7 Assistance</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed font-light">Health questions don't wait for office hours. We are here whenever you need us.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-32 relative border-y border-white/5 bg-white/[0.02]" id="how-it-works">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">How It Works</h2>
+                    <p class="text-zinc-400 font-light text-lg">Three simple steps to personalized health insights.</p>
+                </div>
+
+                <!-- Flow Container -->
+                <div class="relative max-w-5xl mx-auto">
+                    <!-- Connecting Line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-blue to-transparent -translate-y-1/2 opacity-30"></div>
+                    
+                    <div class="grid md:grid-cols-3 gap-12 relative">
+                        <!-- Step 1 -->
+                        <div class="relative flex flex-col items-center text-center space-y-5">
+                            <div class="w-16 h-16 rounded-full glass-panel border border-brand-blue/50 flex items-center justify-center text-2xl font-bold text-white shadow-[0_0_30px_rgba(79,138,255,0.2)] z-10">
+                                1
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2">Ask your question</h4>
+                                <p class="text-sm text-zinc-400 font-light">Type your symptoms or health queries directly into our secure chat.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative flex flex-col items-center text-center space-y-5">
+                            <div class="w-16 h-16 rounded-full glass-panel border border-brand-purple/50 flex items-center justify-center text-2xl font-bold text-white shadow-[0_0_30px_rgba(138,79,255,0.2)] z-10">
+                                2
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2">AI analyzes symptoms</h4>
+                                <p class="text-sm text-zinc-400 font-light">Our model cross-references your data with millions of clinical parameters.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative flex flex-col items-center text-center space-y-5">
+                            <div class="w-16 h-16 rounded-full glass-panel border border-brand-cyan/50 flex items-center justify-center text-2xl font-bold text-white shadow-[0_0_30px_rgba(0,240,255,0.2)] z-10">
+                                3
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2">Get instant suggestions</h4>
+                                <p class="text-sm text-zinc-400 font-light">Receive clear, actionable insights and know exactly what to do next.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust & Security -->
+        <section class="py-32 px-8 max-w-7xl mx-auto" id="trust">
+            <div class="glass-panel rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden border border-white/10">
+                <!-- Background glow inside card -->
+                <div class="absolute inset-0 bg-gradient-to-b from-brand-blue/5 to-transparent pointer-events-none"></div>
+                
+                <div class="relative z-10 space-y-6 max-w-3xl mx-auto">
+                    <div class="flex justify-center gap-4 mb-8">
+                        <span class="material-symbols-outlined text-4xl text-zinc-300" data-icon="lock">lock</span>
+                        <span class="material-symbols-outlined text-4xl text-zinc-300" data-icon="verified_user">verified_user</span>
+                        <span class="material-symbols-outlined text-4xl text-zinc-300" data-icon="health_and_safety">health_and_safety</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white">Secure, Private & Reliable <br/><span class="text-zinc-500">AI Healthcare.</span></h2>
+                    <p class="text-zinc-400 text-lg font-light leading-relaxed">
+                        Your data is encrypted end-to-end. We don't sell your information, and our AI models are trained on verified clinical literature to ensure accurate, safe recommendations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-16 px-8 max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/5 flex flex-col justify-between">
+                    <p class="text-zinc-300 font-light text-sm leading-relaxed mb-8">"It feels like having a knowledgeable doctor in my pocket. The symptom analysis was spot on and saved me an unnecessary ER trip."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 text-sm font-semibold">S</div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Sarah Jenkins</p>
+                            <p class="text-zinc-500 text-xs">Verified User</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/5 flex flex-col justify-between">
+                    <p class="text-zinc-300 font-light text-sm leading-relaxed mb-8">"I uploaded my blood work and MediMind explained everything in plain English. No more frantic Googling!"</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 text-sm font-semibold">M</div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Michael Chen</p>
+                            <p class="text-zinc-500 text-xs">Verified User</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/5 flex flex-col justify-between">
+                    <p class="text-zinc-300 font-light text-sm leading-relaxed mb-8">"The UI is beautiful and simple. It doesn't look like a scary medical app, it looks like a premium tech tool."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 text-sm font-semibold">E</div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Elena Rodriguez</p>
+                            <p class="text-zinc-500 text-xs">Verified User</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="py-32 px-8">
+            <div class="max-w-4xl mx-auto text-center space-y-10">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-white">Experience the Future of Health.</h2>
+                <div class="pt-4">
+                    <a href="#chat-demo" class="btn-glow inline-block bg-white text-black px-12 py-5 rounded-full font-semibold text-lg hover:bg-zinc-100 transition-all scale-100 active:scale-95 duration-200">
+                        Try MediMind Now
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-[14px]" data-icon="neurology">neurology</span>
+                </div>
+                <span class="text-sm font-semibold text-white tracking-tight">MediMind AI</span>
+            </div>
+            
+            <div class="flex gap-8">
+                <a href="#" class="text-xs text-zinc-500 hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="text-xs text-zinc-500 hover:text-white transition-colors">Terms</a>
+                <a href="#" class="text-xs text-zinc-500 hover:text-white transition-colors">Disclaimer</a>
+            </div>
+            
+            <p class="text-xs text-zinc-600">© 2026 MediMind AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Keeping the existing script for chat functionality -->
+    <script src="app.js"></script>
+</body>
+</html>
