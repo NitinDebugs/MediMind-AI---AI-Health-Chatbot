@@ -1,21 +1,9 @@
 {
   "version": 2,
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/login",
-      "dest": "/login.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/dashboard.html"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    }
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/login", "dest": "/login.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
+    { "src": "/", "dest": "/index.html" }
   ]
 }
